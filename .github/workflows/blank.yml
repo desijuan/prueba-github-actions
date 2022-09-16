@@ -1,18 +1,18 @@
-name: Build LaTeX document
+name: Generate PDF
 on: [push]
 jobs:
-  buildeee:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Git repository
+      - name: Checkout
         uses: actions/checkout@v2
-      - name: Compile LaTeX document
+      - name: Compile LaTeX Document
         uses: xu-cheng/latex-action@v2
         with:
           root_file: main.tex
-      - name: move
+      - name: Move
         run: mkdir -p github_artifacts && mv ./main.pdf ./github_artifacts/
-      - name: Upload pdf as artifact
+      - name: Upload PDF as artifact
         uses: actions/upload-artifact@v2
         with:
           name: main.pdf
@@ -26,9 +26,9 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           path: github_artifacts
-      - name: move
+      - name: Move
         run: mkdir -p github_deploy && mv github_artifacts/*/* github_deploy
-      - name: deploy on orphan branch
+      - name: Deploy on orphan branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
